@@ -1,0 +1,31 @@
+import Image from 'next/image';
+import Link from 'next/link';
+import { ContactForm } from '../components/contact-form';
+import { SessionDemo } from '../components/session-demo';
+import { HOURLY_RATE, SMS_RATE } from '../lib/demo-data';
+
+const steps = [
+  ['Connect when you’re ready', 'Availability shows who is free right now. If no one is, this prototype demonstrates a safe no-match state.'],
+  ['Talk in any language', 'The production idea includes translation, but no translation service is connected in this browser-only demo.'],
+  ['Pause without losing time', 'Put a conversation on hold and pick it up later. The simulated countdown waits with you.'],
+  ['Leave whenever you want', 'End a conversation any time. This demo never stores a transcript or any personal information.']
+];
+
+export default function Home() {
+  return <>
+    <nav className="nav"><Link className="brand" href="/">Cadence</Link><div className="nav-links"><a href="#how-it-works">How it works</a><a href="#pricing">Pricing</a><a href="#for-coaches">Become a Friend</a><a href="#contact">Contact</a><a className="button" href="#try-it">Start chatting</a></div></nav>
+    <main>
+      <section className="shell hero"><h1>Someone to talk to.<br />No appointment necessary.</h1><p className="lede">Chat with a Friend — a real person who listens without judgment. Vent, get perspective, or just say hello. You decide when it starts and when it ends.</p><div className="row"><a className="button" href="#try-it">Start chatting — ${SMS_RATE}/sms</a><a className="button ghost" href="#how-it-works">See how it works</a></div></section>
+      <hr className="rule" /><section className="shell stats" aria-label="Cadence, at a glance"><div><p className="stat-number">${SMS_RATE}</p><p className="stat-label">per SMS you send — unlimited texting</p></div><div><p className="stat-number">${HOURLY_RATE}</p><p className="stat-label">per hour — one flat rate, phone or chat</p></div><div><p className="stat-number">60 min</p><p className="stat-label">the demo clock when you connect</p></div><div><p className="stat-number">$5</p><p className="stat-label">simulated payment hold to start</p></div></section>
+      <hr className="rule" /><section id="try-it" className="shell section two-col"><div><p className="eyebrow">Try it</p><h2>See how a conversation works</h2><p className="body-copy">This is a guided simulation. No real message is sent, no account is created, and nothing is charged.</p></div><SessionDemo /></section>
+      <hr className="rule" /><section id="how-it-works" className="shell section"><p className="eyebrow">How it works</p><div className="steps">{steps.map(([title, copy], index) => <div key={title}><strong>0{index + 1}</strong><div><h3>{title}</h3><p>{copy}</p></div></div>)}</div></section>
+      <section className="shell section two-col" style={{ alignItems: 'center' }}><div><p className="eyebrow">Why Cadence</p><h2>Not therapy. Not your group chat.</h2><p className="body-copy">Cadence is a fictional product concept for a place to talk things out first. It is not therapy and not a substitute for professional mental-health care.</p><p className="body-copy" style={{ marginTop: 16, color: 'var(--muted)' }}>If you are in crisis or may harm yourself or someone else, contact emergency services or a local crisis line now.</p></div><Image className="photo" src="/images/cadence-conversation-placeholder.png" width={1456} height={1088} alt="Temporary editorial image of a person reflecting while holding a phone" priority /></section>
+      <hr className="rule" /><section className="shell section"><p className="eyebrow">Friend or Coach</p><h2>Two ways to talk</h2><p className="body-copy" style={{ marginBottom: 28 }}>You’ll always see who you’re talking to — a Friend or a Coach. Here’s the distinction represented in this demo.</p><div className="table-wrap"><table><thead><tr><th></th><th>Friend</th><th>Coach</th></tr></thead><tbody><tr><td>Who they are</td><td>Independent contractor, not a professional coach</td><td>ICF-certified professional coach</td></tr><tr><td>Best for</td><td>Venting, company, thinking out loud</td><td>Working toward a specific goal</td></tr><tr><td>Rate</td><td>${SMS_RATE}/sms or ${HOURLY_RATE}/hr</td><td>${SMS_RATE}/sms or ${HOURLY_RATE}/hr, plus optional packages</td></tr></tbody></table></div></section>
+      <hr className="rule" /><section id="pricing" className="shell section"><p className="eyebrow">Pricing</p><h2>Pay for what you use</h2><div className="price-list" style={{ marginTop: 28 }}><div><h3>Chat & SMS</h3><p>${SMS_RATE} per message you send. Texting is unlimited in the product concept; only messages you send count in the simulator.</p></div><div><h3>By the hour</h3><p>${HOURLY_RATE} for one simulated hour block, phone or chat.</p></div><div><h3>Getting started</h3><p>A $5 payment hold is discussed as product copy only. This prototype does not connect to payments.</p></div><div><h3>No one’s free?</h3><p>The demo includes a no-match state, but does not collect a request or promise a refund.</p></div></div></section>
+      <section className="quote"><div className="shell"><blockquote>“Talking it out shouldn’t require a diagnosis, an appointment, or a bill you can’t afford.”</blockquote><p className="body-copy" style={{ marginTop: 24 }}>— Cadence, fictional product demo</p></div></section>
+      <section id="for-coaches" className="shell section two-col" style={{ paddingBlock: 32 }}><p className="body-copy">Coaching or listening for a living? This demo includes a fictional partner portal with availability, a session queue, and earnings examples.</p><div><Link className="button ghost" href="/partner/sign-in">Open partner portal →</Link></div></section>
+      <hr className="rule" /><section id="contact" className="shell section two-col"><div><p className="eyebrow">Contact</p><h2>Questions, billing, or applying as a Friend</h2><p className="body-copy">This demo form is intentionally local-only. It does not offer live support and does not submit information.</p></div><ContactForm /></section>
+    </main>
+    <footer className="shell footer">© 2026 Cadence. Fictional browser-only demo. The generated image is temporary and must be replaced with approved, licensed imagery before public use.</footer>
+  </>;
+}
