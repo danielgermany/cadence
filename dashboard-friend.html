@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Partner portal — Cadence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-brand">Cadence</a>
+  <div class="nav-links">
+    <span style="font-size:14px">Partner portal</span>
+    <button type="button" id="logout-btn" class="btn btn-secondary" style="cursor:pointer">Log out</button>
+  </div>
+</nav>
+
+<main class="shell" id="dashboard-main" style="padding:clamp(32px,6vw,64px) clamp(20px,5vw,72px);display:none">
+  <span class="eyebrow">Your listening room</span>
+  <h1 id="greeting" style="font-weight:800;font-size:32px;margin:0 0 8px"></h1>
+  <p class="notice" style="margin-bottom:32px">Cadence is not therapy. Follow the community guidelines / ICF Code of Ethics in every conversation.</p>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px">
+    <section class="card">
+      <span class="eyebrow" style="margin-bottom:12px">Availability</span>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+        <span id="availability-dot" class="dot"></span>
+        <strong id="availability-label"></strong>
+      </div>
+      <p class="notice" style="margin-bottom:16px">Toggling this updates whether customers see you as available to chat.</p>
+      <button type="button" id="availability-toggle" class="btn btn-secondary" style="cursor:pointer">Toggle availability</button>
+    </section>
+
+    <section class="card">
+      <span class="eyebrow" style="margin-bottom:8px">Waiting now</span>
+      <p class="notice">No one is waiting yet. When a customer reaches out, they'll show up here.</p>
+    </section>
+
+    <section class="card">
+      <span class="eyebrow" style="margin-bottom:8px">Profile</span>
+      <p style="font-size:14px;margin:0 0 4px"><strong>Name:</strong> <span id="profile-name"></span></p>
+      <p style="font-size:14px;margin:0 0 4px"><strong>Email:</strong> <span id="profile-email"></span></p>
+      <p style="font-size:14px;margin:0"><strong>Partner since:</strong> <span id="profile-since"></span></p>
+    </section>
+  </div>
+</main>
+
+<p id="loading" class="shell notice" style="padding:64px clamp(20px,5vw,72px)">Loading your portal…</p>
+
+<script type="module" src="dashboard-friend.js"></script>
+</body>
+</html>

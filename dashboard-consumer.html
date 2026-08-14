@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your account — Cadence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-brand">Cadence</a>
+  <div class="nav-links">
+    <span style="font-size:14px">Your account</span>
+    <button type="button" id="logout-btn" class="btn btn-secondary" style="cursor:pointer">Log out</button>
+  </div>
+</nav>
+
+<main class="shell" id="dashboard-main" style="padding:clamp(32px,6vw,64px) clamp(20px,5vw,72px);display:none">
+  <span class="eyebrow">Welcome back</span>
+  <h1 id="greeting" style="font-weight:800;font-size:32px;margin:0 0 8px"></h1>
+  <p class="notice" style="margin-bottom:32px">This dashboard reflects your real Cadence account — created at sign-up.</p>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px">
+    <section class="card">
+      <span class="eyebrow" style="margin-bottom:8px">Start a conversation</span>
+      <p class="notice" style="margin-bottom:16px">Ready to talk? Head back to the homepage to connect with a Friend.</p>
+      <a href="index.html#try-it" class="btn">Start chatting</a>
+    </section>
+
+    <section class="card">
+      <span class="eyebrow" style="margin-bottom:8px">Your conversations</span>
+      <p class="notice">No conversations yet. Once you chat with a Friend, sessions will show up here.</p>
+    </section>
+
+    <section class="card">
+      <span class="eyebrow" style="margin-bottom:8px">Account</span>
+      <p style="font-size:14px;margin:0 0 4px"><strong>Email:</strong> <span id="account-email"></span></p>
+      <p style="font-size:14px;margin:0"><strong>Member since:</strong> <span id="account-since"></span></p>
+    </section>
+  </div>
+</main>
+
+<p id="loading" class="shell notice" style="padding:64px clamp(20px,5vw,72px)">Loading your account…</p>
+
+<script type="module" src="dashboard-consumer.js"></script>
+</body>
+</html>

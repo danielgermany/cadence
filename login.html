@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Log in — Cadence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div style="min-height:100vh;display:flex;flex-direction:column">
+  <nav class="nav">
+    <a href="index.html" class="nav-brand">Cadence</a>
+    <div class="nav-links">
+      <span aria-current="page" style="font-size:14px">Log in</span>
+      <a href="index.html" style="font-size:14px;color:var(--text-faint)">cadence.com</a>
+    </div>
+  </nav>
+
+  <main style="flex:1;display:grid;place-items:center;padding:clamp(24px,6vw,64px) 20px">
+    <div class="card" style="width:min(420px,100%);display:flex;flex-direction:column;gap:20px">
+
+      <div>
+        <span class="tag-outline" style="margin-bottom:16px">Secure sign-in</span>
+        <h1 id="title" style="font-weight:800;font-size:26px;margin:12px 0 0">Log in</h1>
+        <p id="subtitle" class="notice" style="margin-top:6px"></p>
+      </div>
+
+      <div class="seg" style="align-self:flex-start">
+        <label><input type="radio" name="role" id="role-consumer" value="consumer" />Consumer</label>
+        <label><input type="radio" name="role" id="role-friend" value="friend" />Friend / Coach</label>
+      </div>
+
+      <div class="seg" style="align-self:flex-start">
+        <label><input type="radio" name="mode" id="mode-signin" value="signin" checked />Sign in</label>
+        <label><input type="radio" name="mode" id="mode-signup" value="signup" />Create account</label>
+      </div>
+
+      <form id="login-form" style="display:flex;flex-direction:column;gap:4px">
+        <div id="name-field" class="field" style="display:none">
+          <label for="name">Name</label>
+          <input id="name" class="input" type="text" placeholder="Your name" />
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" class="input" type="email" required placeholder="you@example.com" />
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input id="password" class="input" type="password" required minlength="6" placeholder="At least 6 characters" />
+        </div>
+        <p id="form-error" class="notice-error" style="display:none;margin-bottom:12px"></p>
+        <button type="submit" id="submit-btn" class="btn btn-block" style="padding:14px 0">Sign in</button>
+      </form>
+
+      <hr class="rule">
+
+      <p class="notice">Friends and Coaches agree to Cadence's community guidelines or the ICF Code of Ethics on sign-up. Consumers just need an email and password.</p>
+    </div>
+  </main>
+
+  <footer style="text-align:center;padding:24px 20px;font-size:12.5px;color:var(--text-faint)">
+    <a href="index.html">← Back to Cadence</a>
+  </footer>
+</div>
+
+<script type="module" src="login.js"></script>
+</body>
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cadence — Someone to talk to</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="nav">
+  <span class="nav-brand">Cadence</span>
+  <div class="nav-links">
+    <a href="#how-it-works">How it works</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#for-coaches">Become a Friend</a>
+    <a href="#contact">Contact</a>
+    <a href="#try-it" class="btn">Start chatting</a>
+    <div id="nav-auth" style="position:relative">
+      <button type="button" id="login-toggle" class="btn btn-secondary" style="cursor:pointer">Log in ▾</button>
+      <div id="login-menu" style="display:none;position:absolute;right:0;top:calc(100% + 6px);background:var(--bg);border:1px solid var(--border);min-width:180px;z-index:10">
+        <a href="login.html?role=consumer" style="display:block;padding:12px 16px;font-size:14px;border-bottom:1px solid var(--border)">Log in — Consumer</a>
+        <a href="login.html?role=friend" style="display:block;padding:12px 16px;font-size:14px">Log in — Friend / Coach</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<section class="shell" style="padding-top:clamp(56px,9vw,104px);padding-bottom:clamp(40px,6vw,72px)">
+  <h1 style="font-weight:800;font-size:clamp(38px,6vw,72px);line-height:1.05;letter-spacing:-0.02em;margin:0">
+    <span style="display:block">Someone to talk to.</span>
+    <span style="display:block">No appointment necessary.</span>
+  </h1>
+  <p style="font-size:18px;line-height:1.6;max-width:58ch;margin:24px 0 0;color:var(--text-muted)">Chat, text, or call a Friend — a real person who listens without judgment. Vent, get advice, or just say hello. You decide when it starts and when it ends.</p>
+  <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:32px">
+    <a href="#try-it" id="hero-cta" class="btn btn-lg">Start chatting</a>
+    <a href="#how-it-works" class="btn-outline" style="display:inline-flex;align-items:center;font-weight:800;font-size:15px;padding:16px 10px;border:none">See how it works</a>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section class="shell" style="padding:clamp(40px,6vw,72px) clamp(20px,5vw,72px)" aria-label="Cadence, at a glance">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:32px">
+    <div>
+      <p id="sms-rate-stat" style="font-weight:800;font-size:clamp(32px,3.4vw,46px);color:var(--accent);margin:0">$1</p>
+      <p style="font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-faint);margin:8px 0 0">per SMS you send — unlimited texting</p>
+    </div>
+    <div>
+      <p id="hourly-rate-stat" style="font-weight:800;font-size:clamp(32px,3.4vw,46px);color:var(--accent);margin:0">$25</p>
+      <p style="font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-faint);margin:8px 0 0">per hour — one flat rate, phone or chat</p>
+    </div>
+    <div>
+      <p style="font-weight:800;font-size:clamp(32px,3.4vw,46px);color:var(--accent);margin:0">60 min</p>
+      <p style="font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-faint);margin:8px 0 0">the clock your Friend sets when they connect</p>
+    </div>
+    <div>
+      <p style="font-weight:800;font-size:clamp(32px,3.4vw,46px);color:var(--accent);margin:0">$5</p>
+      <p style="font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-faint);margin:8px 0 0">held to start, nothing more until you send</p>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+<section id="try-it" class="shell" style="padding:clamp(40px,6vw,72px) clamp(20px,5vw,72px);display:flex;gap:48px;flex-wrap:wrap;align-items:flex-start">
+  <div style="flex:1 1 320px;min-width:280px">
+    <span class="eyebrow">Try it</span>
+    <h2 style="font-weight:800;font-size:32px;line-height:1.15;margin:0">See how a conversation works</h2>
+    <p style="font-size:15.5px;line-height:1.6;color:var(--text-muted);max-width:44ch;margin:16px 0 0">This is a demo of the connect flow. No real message is sent, and nothing is charged.</p>
+  </div>
+
+  <div class="card" style="flex:1 1 360px;min-width:300px;max-width:440px;display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <span style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600">
+        <span class="dot" style="background:var(--accent);animation:pulse 2s infinite"></span>
+        3 Friends available now
+      </span>
+      <span style="font-size:11px;color:var(--text-faint)">Demo — not a real session</span>
+    </div>
+
+    <div id="demo-idle" style="display:flex;flex-direction:column;gap:16px">
+      <p style="font-size:14px;color:var(--text-muted);margin:0">Tap connect to see how a session works.</p>
+      <button type="button" id="demo-connect" class="btn" style="justify-content:flex-start">Connect with a Friend</button>
+    </div>
+
+    <div id="demo-connected" style="display:none;flex-direction:column;gap:12px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted)">
+        <span id="demo-minutes"></span>
+        <span id="demo-cost"></span>
+      </div>
+      <div id="demo-messages" style="display:flex;flex-direction:column;gap:8px;max-height:220px;overflow-y:auto;padding-right:2px"></div>
+      <div style="display:flex;gap:8px">
+        <input id="demo-draft" class="input" placeholder="Type a message…" style="flex:1;min-width:0" />
+        <button type="button" id="demo-send" class="btn" style="white-space:nowrap">Send</button>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button type="button" id="demo-hold" class="btn-secondary" style="flex:1;padding:9px 0;font-weight:800;font-size:12.5px;cursor:pointer">Hold</button>
+        <button type="button" id="demo-end" class="btn-secondary" style="flex:1;padding:9px 0;font-weight:800;font-size:12.5px;cursor:pointer">End</button>
+      </div>
+    </div>
+
+    <div id="demo-ended" style="display:none;flex-direction:column;gap:12px">
+      <p id="demo-ended-summary" style="font-size:14px;color:var(--text-muted);margin:0"></p>
+      <button type="button" id="demo-restart" style="align-self:flex-start;background:transparent;color:var(--accent);font-weight:800;font-size:14px;padding:10px 4px;border:none;cursor:pointer">Start another demo</button>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section id="how-it-works" class="shell" style="padding:clamp(48px,7vw,88px) clamp(20px,5vw,72px)">
+  <span class="eyebrow" style="margin-bottom:24px">How it works</span>
+
+  <div style="display:grid;grid-template-columns:56px 1fr;gap:16px 24px;align-items:baseline;padding:24px 0;border-top:2px solid var(--border)">
+    <p style="font-weight:800;font-size:15px;margin:0">01</p>
+    <div>
+      <h3 style="font-weight:800;font-size:22px;margin:0 0 8px">Connect when you're ready</h3>
+      <p style="font-size:15.5px;line-height:1.6;color:var(--text-muted);max-width:56ch;margin:0">Availability shows who's free right now. If no one is, leave a message with why you're reaching out and when to reconnect — you'll hear back, or get an automatic refund after 24 hours.</p>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:56px 1fr;gap:16px 24px;align-items:baseline;padding:24px 0;border-top:2px solid var(--border)">
+    <p style="font-weight:800;font-size:15px;margin:0">02</p>
+    <div>
+      <h3 style="font-weight:800;font-size:22px;margin:0 0 8px">Talk in any language</h3>
+      <p style="font-size:15.5px;line-height:1.6;color:var(--text-muted);max-width:56ch;margin:0">The chat box auto-translates as you type, so language is never the barrier.</p>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:56px 1fr;gap:16px 24px;align-items:baseline;padding:24px 0;border-top:2px solid var(--border)">
+    <p style="font-weight:800;font-size:15px;margin:0">03</p>
+    <div>
+      <h3 style="font-weight:800;font-size:22px;margin:0 0 8px">Pause without losing time</h3>
+      <p style="font-size:15.5px;line-height:1.6;color:var(--text-muted);max-width:56ch;margin:0">Put a conversation on hold and pick it up later with the same Friend or a different one — the clock waits with you.</p>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:56px 1fr;gap:16px 24px;align-items:baseline;padding:24px 0;border-top:2px solid var(--border);border-bottom:2px solid var(--border)">
+    <p style="font-weight:800;font-size:15px;margin:0">04</p>
+    <div>
+      <h3 style="font-weight:800;font-size:22px;margin:0 0 8px">Leave whenever you want</h3>
+      <p style="font-size:15.5px;line-height:1.6;color:var(--text-muted);max-width:56ch;margin:0">End a conversation any time. The transcript is yours alone; a Friend can only share it to suggest a referral, and only with your OK.</p>
+    </div>
+  </div>
+</section>
+
+<section class="shell" style="padding:clamp(48px,7vw,88px) clamp(20px,5vw,72px);display:flex;gap:48px;flex-wrap:wrap;align-items:center">
+  <div style="flex:1 1 320px;min-width:280px">
+    <span class="eyebrow">Why Cadence</span>
+    <h2 style="font-weight:800;font-size:32px;line-height:1.15;margin:0">Not therapy. Not your group chat.</h2>
+    <p style="font-size:15.5px;line-height:1.6;color:var(--text-muted);max-width:48ch;margin:20px 0 0">Hiring a coach or therapist costs more than most people can spend on a hard week. Cadence gives you somewhere to talk it out first — freely, with no strings attached — for as long or as little as you need. Want more structure? Moving to a professional coaching session is one tap away.</p>
+    <p style="font-size:14px;line-height:1.6;color:var(--text-faint);max-width:48ch;margin:16px 0 0">Open to adults of any age, and to teens with signed parental consent.</p>
+  </div>
+  <figure style="flex:1 1 380px;min-width:280px;margin:0;filter:grayscale(1) contrast(1.08)">
+    <div class="image-placeholder">Product photograph — someone chatting on their phone</div>
+  </figure>
+</section>
+
+<hr class="rule">
+
+<section class="shell" style="padding:clamp(48px,7vw,88px) clamp(20px,5vw,72px)">
+  <span class="eyebrow">Friend or Coach</span>
+  <h2 style="font-weight:800;font-size:32px;line-height:1.15;margin:0 0 12px">Two ways to talk</h2>
+  <p style="font-size:15.5px;line-height:1.6;color:var(--text-muted);max-width:60ch;margin:0 0 32px">You'll always see who you're talking to — a Friend or a Coach. Here's the difference.</p>
+
+  <div style="overflow-x:auto">
+  <table style="width:100%;border-collapse:collapse;font-size:14.5px;min-width:560px">
+    <thead>
+      <tr>
+        <th style="text-align:left;padding:12px 8px;border-bottom:2px solid var(--border);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint)"></th>
+        <th style="text-align:left;padding:12px 8px;border-bottom:2px solid var(--border);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint)">
+          Friend <span class="tag" style="margin-left:6px;text-transform:none;font-size:10px">Recommended</span>
+        </th>
+        <th style="text-align:left;padding:12px 8px;border-bottom:2px solid var(--border);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint)">Coach</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding:14px 8px;border-bottom:1px solid var(--border);color:var(--text-muted)">Who they are</td>
+        <td style="padding:14px 8px;border-bottom:1px solid var(--border)">Independent contractor, not a professional coach</td>
+        <td style="padding:14px 8px;border-bottom:1px solid var(--border)">ICF-certified professional coach</td>
+      </tr>
+      <tr>
+        <td style="padding:14px 8px;border-bottom:1px solid var(--border);color:var(--text-muted)">How they appear</td>
+        <td style="padding:14px 8px;border-bottom:1px solid var(--border)">Their name, or a nickname of their choosing</td>
+        <td style="padding:14px 8px;border-bottom:1px solid var(--border)">Their professional coaching title</td>
+      </tr>
+      <tr>
+        <td style="padding:14px 8px;border-bottom:1px solid var(--border);color:var(--text-muted)">Best for</td>
+        <td style="padding:14px 8px;border-bottom:1px solid var(--border)">Venting, company, thinking out loud</td>
+        <td style="padding:14px 8px;border-bottom:1px solid var(--border)">Working toward a specific goal</td>
+      </tr>
+      <tr>
+        <td style="padding:14px 8px;border-bottom:1px solid var(--border);color:var(--text-muted)">Code of conduct</td>
+        <td style="padding:14px 8px;border-bottom:1px solid var(--border)">Company guidelines</td>
+        <td style="padding:14px 8px;border-bottom:1px solid var(--border)">ICF Code of Ethics</td>
+      </tr>
+      <tr>
+        <td style="padding:14px 8px;color:var(--text-muted)">Rate</td>
+        <td id="rate-friend" style="padding:14px 8px">$1/sms or $25/hr</td>
+        <td id="rate-coach" style="padding:14px 8px">$1/sms or $25/hr, plus optional packages</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section id="pricing" class="shell" style="padding:clamp(48px,7vw,88px) clamp(20px,5vw,72px)">
+  <span class="eyebrow">Pricing</span>
+  <h2 style="font-weight:800;font-size:32px;line-height:1.15;margin:0 0 32px">Pay for what you use</h2>
+
+  <div style="display:flex;flex-direction:column">
+    <div style="display:flex;gap:24px;flex-wrap:wrap;padding:20px 0;border-top:2px solid var(--border)">
+      <h4 style="flex:1 1 220px;font-weight:800;font-size:17px;margin:0">Chat &amp; SMS</h4>
+      <p id="pricing-sms" style="flex:2 1 320px;font-size:15px;line-height:1.6;color:var(--text-muted);margin:0">$1 per message you send. Texting is unlimited — only messages you send count against the clock.</p>
+    </div>
+    <div style="display:flex;gap:24px;flex-wrap:wrap;padding:20px 0;border-top:2px solid var(--border)">
+      <h4 style="flex:1 1 220px;font-weight:800;font-size:17px;margin:0">By the hour</h4>
+      <p id="pricing-hourly" style="flex:2 1 320px;font-size:15px;line-height:1.6;color:var(--text-muted);margin:0">$25 for one full hour block, phone or chat. Your Friend decides whether to continue or wrap up.</p>
+    </div>
+    <div style="display:flex;gap:24px;flex-wrap:wrap;padding:20px 0;border-top:2px solid var(--border)">
+      <h4 style="flex:1 1 220px;font-weight:800;font-size:17px;margin:0">Getting started</h4>
+      <p style="flex:2 1 320px;font-size:15px;line-height:1.6;color:var(--text-muted);margin:0">A $5 hold on your card, digital wallet, or bank account. Nothing else is charged until you send.</p>
+    </div>
+    <div style="display:flex;gap:24px;flex-wrap:wrap;padding:20px 0;border-top:2px solid var(--border)">
+      <h4 style="flex:1 1 220px;font-weight:800;font-size:17px;margin:0">Going professional</h4>
+      <p style="flex:2 1 320px;font-size:15px;line-height:1.6;color:var(--text-muted);margin:0">Package pricing is available if you want a structured coaching session instead of open chat.</p>
+    </div>
+    <div style="display:flex;gap:24px;flex-wrap:wrap;padding:20px 0;border-top:2px solid var(--border);border-bottom:2px solid var(--border)">
+      <h4 style="flex:1 1 220px;font-weight:800;font-size:17px;margin:0">No one's free?</h4>
+      <p style="flex:2 1 320px;font-size:15px;line-height:1.6;color:var(--text-muted);margin:0">Leave a message with why you're reaching out. You'll hear back, or get an automatic refund after 24 hours.</p>
+    </div>
+  </div>
+  <p style="font-size:13px;color:var(--text-faint);margin:20px 0 0">We accept credit, debit, and prepaid cards, plus digital wallets.</p>
+</section>
+
+<section style="background:var(--panel);padding:clamp(56px,8vw,96px) 0">
+  <div class="shell">
+    <blockquote style="font-weight:800;font-size:clamp(24px,2.6vw,32px);line-height:1.4;letter-spacing:-0.01em;max-width:32ch;margin:0">"Talking it out shouldn't require a diagnosis, an appointment, or a bill you can't afford."</blockquote>
+    <figcaption style="font-size:15px;color:var(--text-muted);margin:24px 0 0">— Cadence</figcaption>
+  </div>
+</section>
+
+<section id="for-coaches" class="shell" style="padding:32px clamp(20px,5vw,72px);display:flex;gap:24px;flex-wrap:wrap;align-items:center;justify-content:space-between;border-bottom:2px solid var(--border)">
+  <p style="font-size:15px;line-height:1.6;color:var(--text-muted);max-width:56ch;margin:0">Coaching or listening for a living? Independent contractors are always welcome — set your own hours, opt out anytime, and get paid by PayPal, direct deposit, or digital wallet.</p>
+  <a href="login.html?role=friend" style="display:inline-flex;align-items:center;white-space:nowrap;color:var(--accent);font-weight:800;font-size:15px;padding:12px 4px">Become a Friend →</a>
+</section>
+
+<section id="contact" class="shell" style="padding:clamp(48px,7vw,88px) clamp(20px,5vw,72px);display:flex;gap:48px;flex-wrap:wrap">
+  <div style="flex:1 1 300px;min-width:260px">
+    <span class="eyebrow">Contact</span>
+    <h2 style="font-weight:800;font-size:28px;line-height:1.2;margin:0 0 16px">Questions, billing, or applying as a Friend</h2>
+    <p style="font-size:15px;line-height:1.6;color:var(--text-muted);max-width:44ch;margin:0">We don't offer live chat or phone support for account questions — every request goes through this form. We reply within one business day.</p>
+    <p style="font-size:13px;line-height:1.6;color:var(--text-faint);max-width:44ch;margin:24px 0 0">Cadence connects you with a Friend for supportive conversation. It's not therapy and not a substitute for professional mental health care. If you're in crisis, contact emergency services or a crisis line in your area.</p>
+  </div>
+  <form id="contact-form" style="flex:1 1 360px;min-width:280px;display:flex;flex-direction:column;gap:16px">
+    <div class="field">
+      <label for="contact-name">Name</label>
+      <input id="contact-name" class="input" type="text" />
+    </div>
+    <div class="field">
+      <label for="contact-email">Email</label>
+      <input id="contact-email" class="input" type="email" />
+    </div>
+    <div class="field">
+      <label for="contact-reason">Reason</label>
+      <select id="contact-reason" class="input">
+        <option>General question</option>
+        <option>Billing</option>
+        <option>Become a Friend</option>
+        <option>Safety concern</option>
+      </select>
+    </div>
+    <div>
+      <label style="display:block;font-size:12px;margin-bottom:6px;color:var(--text-muted)">Preferred reply method</label>
+      <div style="display:flex;gap:16px;flex-wrap:wrap">
+        <label style="display:inline-flex;align-items:center;gap:6px;font-size:14px"><input type="radio" name="reply-method" checked /> Email</label>
+        <label style="display:inline-flex;align-items:center;gap:6px;font-size:14px"><input type="radio" name="reply-method" /> SMS</label>
+        <label style="display:inline-flex;align-items:center;gap:6px;font-size:14px"><input type="radio" name="reply-method" /> Phone</label>
+      </div>
+    </div>
+    <div class="field">
+      <label for="contact-message">Message</label>
+      <textarea id="contact-message" class="input" style="min-height:100px;resize:vertical"></textarea>
+    </div>
+    <button type="submit" class="btn" style="align-self:flex-start;padding:14px 22px">Send message</button>
+    <p id="contact-confirm" class="notice" style="display:none">Thanks — this is a demo form, so nothing was actually sent.</p>
+  </form>
+</section>
+
+<section style="background:var(--accent);color:var(--bg)">
+  <div class="shell" style="padding:clamp(56px,8vw,96px) clamp(20px,5vw,72px)">
+    <h3 style="font-weight:800;font-size:clamp(32px,4.2vw,52px);line-height:1.1;letter-spacing:-0.015em;margin:0">Ready to talk to someone?</h3>
+    <div style="margin-top:32px">
+      <a href="#try-it" style="display:inline-flex;align-items:center;color:var(--bg);font-weight:800;font-size:15px;padding:16px 24px;border:1px solid var(--bg)">Start chatting</a>
+    </div>
+  </div>
+</section>
+
+<footer class="shell" style="padding:32px clamp(20px,5vw,72px);font-size:13px;line-height:1.6;color:var(--text-muted)">
+  © 2026 Cadence. Friends and Coaches are independent contractors, not employees. Teens may use Cadence only with signed parental consent.
+</footer>
+
+<script type="module" src="nav-auth.js"></script>
+<script src="demo-widget.js"></script>
+</body>
+</html>
