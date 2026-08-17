@@ -4,7 +4,7 @@ import {
 } from 'https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js';
 import { doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js';
 import { auth, db } from './firebase-config.js';
-import { watchAuth } from './auth.js';
+import { watchAuth, dashboardFor } from './auth.js';
 
 const params = new URLSearchParams(window.location.search);
 const initialRole = params.get('role') === 'friend' ? 'friend' : 'consumer';
@@ -46,10 +46,6 @@ function updateCopy() {
 [roleConsumer, roleFriend, modeSignin, modeSignup].forEach((el) => el.addEventListener('change', updateCopy));
 updateCopy();
 
-function dashboardFor(role) {
-  return role === 'friend' ? 'dashboard-friend.html' : 'dashboard-consumer.html';
-}
-
 // Already signed in — skip straight to the dashboard.
 watchAuth((user, profile) => {
   if (user && profile) window.location.href = dashboardFor(profile.role);
@@ -71,6 +67,10 @@ form.addEventListener('submit', async (e) => {
         role,
         displayName: nameInput.value.trim() || email.split('@')[0],
         createdAt: new Date().toISOString(),
+        // Seeded so the dashboard profile panel always has keys to edit.
+        available: role === 'friend',
+        languages: [],
+        topics: [],
       });
       window.location.href = dashboardFor(role);
     } else {

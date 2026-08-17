@@ -19,24 +19,44 @@
 </nav>
 
 <main class="shell" id="dashboard-main" style="padding:clamp(32px,6vw,64px) clamp(20px,5vw,72px);display:none">
-  <span class="eyebrow">Welcome back</span>
-  <h1 id="greeting" style="font-weight:800;font-size:32px;margin:0 0 8px"></h1>
-  <p class="notice" style="margin-bottom:32px">This dashboard reflects your real Cadence account — created at sign-up.</p>
+  <div class="page-head">
+    <div>
+      <span class="eyebrow">Welcome back</span>
+      <h1 id="greeting" class="page-title"></h1>
+      <p class="notice">Cadence is not therapy. If you're in crisis, call or text 988.</p>
+    </div>
+    <button type="button" id="start-chat-btn" class="btn btn-lg" style="cursor:pointer">Start a conversation</button>
+  </div>
 
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px">
-    <section class="card">
-      <span class="eyebrow" style="margin-bottom:8px">Start a conversation</span>
-      <p class="notice" style="margin-bottom:16px">Ready to talk? Head back to the homepage to connect with a Friend.</p>
-      <a href="index.html#try-it" class="btn">Start chatting</a>
+  <div id="kpis" class="kpi-row"></div>
+
+  <div class="grid-cards">
+    <section class="card card-wide">
+      <div class="card-head">
+        <span class="eyebrow">Your conversations</span>
+        <span id="history-count" class="d-list-meta"></span>
+      </div>
+      <div id="history"></div>
+      <p id="history-note" class="notice" style="margin-top:12px;display:none">Showing your most recent 200 conversations.</p>
     </section>
 
     <section class="card">
-      <span class="eyebrow" style="margin-bottom:8px">Your conversations</span>
-      <p class="notice">No conversations yet. Once you chat with a Friend, sessions will show up here.</p>
+      <span class="eyebrow" style="margin-bottom:8px">Spending</span>
+      <p style="font-size:14px;margin:0 0 4px"><strong>Total spent:</strong> <span id="total-spend" class="money"></span></p>
+      <p style="font-size:14px;margin:0 0 4px"><strong>Time in conversation:</strong> <span id="total-minutes"></span></p>
+      <p style="font-size:14px;margin:0 0 12px"><strong>Rate:</strong> <span id="rate-line"></span></p>
+      <p class="notice">Cadence charges per message sent, not per minute. There is no payment processing in this build — these are recorded amounts.</p>
     </section>
 
     <section class="card">
-      <span class="eyebrow" style="margin-bottom:8px">Account</span>
+      <span class="eyebrow" style="margin-bottom:8px">Profile &amp; account</span>
+      <div class="field">
+        <label for="display-name">Display name</label>
+        <input id="display-name" class="input" maxlength="60" autocomplete="off">
+      </div>
+      <button type="button" id="save-profile" class="btn btn-secondary" style="cursor:pointer">Save</button>
+      <p id="profile-status" class="notice" style="margin-top:8px;display:none"></p>
+      <hr class="rule" style="margin:16px 0">
       <p style="font-size:14px;margin:0 0 4px"><strong>Email:</strong> <span id="account-email"></span></p>
       <p style="font-size:14px;margin:0"><strong>Member since:</strong> <span id="account-since"></span></p>
     </section>

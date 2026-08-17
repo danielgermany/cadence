@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chat — Cadence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<main id="chat-root" style="max-width:520px;margin:0 auto;padding:24px 20px;display:none">
+
+  <div class="card-head">
+    <span class="eyebrow">Cadence chat</span>
+    <span id="chat-status" class="tag-outline"></span>
+  </div>
+
+  <!-- Consumer: pick a topic and join the queue -->
+  <section id="pane-topic" class="card" style="display:none">
+    <div class="field">
+      <label for="topic-input">What's on your mind?</label>
+      <input id="topic-input" class="input" maxlength="140" placeholder="e.g. rough week at work" autocomplete="off">
+    </div>
+    <p class="notice" style="margin-bottom:16px">Your name and topic are visible to available Friends while you wait.</p>
+    <button type="button" id="join-btn" class="btn btn-block">Find a Friend</button>
+    <p id="chat-error" class="notice-error" style="margin-top:12px;display:none"></p>
+  </section>
+
+  <!-- Either role: waiting for the other side -->
+  <section id="pane-waiting" class="card" style="display:none">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+      <span class="live-dot"></span>
+      <strong id="waiting-title">Finding a Friend…</strong>
+    </div>
+    <p id="waiting-note" class="notice" style="margin-bottom:16px"></p>
+    <button type="button" id="cancel-btn" class="btn btn-secondary">Cancel</button>
+  </section>
+
+  <!-- Live conversation -->
+  <section id="pane-live" class="card" style="display:none">
+    <div class="card-head">
+      <strong id="live-with" style="font-size:15px"></strong>
+      <span id="live-timer" class="d-list-meta"></span>
+    </div>
+    <p id="live-topic" class="notice" style="margin-bottom:12px"></p>
+
+    <div id="chat-log" class="chat-log" style="margin-bottom:12px"></div>
+
+    <div id="composer" style="display:flex;gap:8px;margin-bottom:12px">
+      <input id="draft" class="input" placeholder="Type a message…" autocomplete="off">
+      <button type="button" id="send-btn" class="btn">Send</button>
+    </div>
+
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+      <span id="live-cost" class="d-list-meta"></span>
+      <button type="button" id="end-btn" class="btn btn-secondary">End chat</button>
+    </div>
+  </section>
+
+  <!-- Wrap-up -->
+  <section id="pane-ended" class="card" style="display:none">
+    <span class="eyebrow" style="margin-bottom:8px">Chat ended</span>
+    <p id="ended-summary" class="notice" style="margin-bottom:16px"></p>
+    <a href="index.html" id="ended-link" class="btn btn-secondary">Back to dashboard</a>
+  </section>
+
+  <p class="notice" style="margin-top:20px">Cadence is not therapy. If you're in crisis, call or text 988.</p>
+</main>
+
+<p id="loading" class="notice" style="max-width:520px;margin:0 auto;padding:48px 20px">Opening your chat…</p>
+
+<script type="module" src="chat.js"></script>
+</body>
+</html>

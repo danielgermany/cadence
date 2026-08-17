@@ -1,8 +1,120 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    function signedIn() { return request.auth != null; }
+
+    // NOTE: get() inside rules bypasses rules, so this reads users/{uid} even
+    // though the users read rule below is owner-only. Intended. Each distinct
+    // path is a billed read, cached within a single evaluation.
+    function myRole() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
+    }
+    function isFriend()   { return signedIn() && myRole() == 'friend'; }
+    function isConsumer() { return signedIn() && myRole() == 'consumer'; }
+
+    // ---- users: owner-only, forever. Nobody reads anybody else's profile. ----
     match /users/{uid} {
-      allow read, write: if request.auth != null && request.auth.uid == uid;
+      allow read: if signedIn() && request.auth.uid == uid;
+
+      allow create: if signedIn() && request.auth.uid == uid
+                    && request.resource.data.role in ['consumer', 'friend']
+                    && request.resource.data.email is string
+                    && request.resource.data.displayName is string
+                    && request.resource.data.displayName.size() <= 60;
+
+      allow update: if signedIn() && request.auth.uid == uid
+                    && request.resource.data.role      == resource.data.role
+                    && request.resource.data.email     == resource.data.email
+                    && request.resource.data.createdAt == resource.data.createdAt
+                    && request.resource.data.diff(resource.data).affectedKeys()
+                         .hasOnly(['displayName', 'available', 'languages', 'topics']);
+
+      allow delete: if false;
+    }
+
+    // ---- queue: consumers own their entry; any signed-in friend may read + claim. ----
+    // Only displayName / topic / timestamps live here — never add anything
+    // sensitive, because every Friend can read every waiting entry.
+    match /queue/{consumerId} {
+      allow read: if isFriend() || (signedIn() && request.auth.uid == consumerId);
+
+      // `createdAt == request.time` forces serverTimestamp(): a client-side
+      // Date is rejected, so nobody can backdate their queue position.
+      allow create: if isConsumer()
+                    && request.auth.uid == consumerId
+                    && request.resource.data.consumerId == consumerId
+                    && request.resource.data.status == 'waiting'
+                    && request.resource.data.claimedBy == null
+                    && request.resource.data.claimedAt == null
+                    && request.resource.data.displayName is string
+                    && request.resource.data.displayName.size() <= 60
+                    && request.resource.data.topic is string
+                    && request.resource.data.topic.size() <= 140
+                    && request.resource.data.createdAt == request.time;
+
+      // The two `allow update` blocks below are OR'd, not a duplicate.
+
+      // 1. Consumer edits their own topic while still waiting.
+      allow update: if signedIn() && request.auth.uid == consumerId
+                    && resource.data.status == 'waiting'
+                    && request.resource.data.diff(resource.data)
+                         .affectedKeys().hasOnly(['topic'])
+                    && request.resource.data.topic is string
+                    && request.resource.data.topic.size() <= 140;
+
+      // 2. A friend claims a waiting entry, and may only stamp *themselves* in.
+      //    The `status == 'waiting'` precondition is the compare-and-swap that
+      //    makes a claim race safe without a transaction.
+      allow update: if isFriend()
+                    && resource.data.status == 'waiting'
+                    && request.resource.data.diff(resource.data).affectedKeys()
+                         .hasOnly(['status', 'claimedBy', 'claimedAt', 'claimedByName'])
+                    && request.resource.data.status == 'claimed'
+                    && request.resource.data.claimedBy == request.auth.uid
+                    && request.resource.data.claimedAt == request.time
+                    && request.resource.data.claimedByName is string
+                    && request.resource.data.claimedByName.size() <= 60;
+
+      allow delete: if signedIn() && request.auth.uid == consumerId;
+    }
+
+    // ---- sessions: readable/writable only by the two participants. ----
+    // The read rule is an OR of two field equalities, so every client query
+    // MUST carry where('consumerId','==',uid) or where('friendId','==',uid).
+    // An unfiltered list is denied.
+    match /sessions/{sessionId} {
+
+      allow read: if signedIn()
+                  && (resource.data.consumerId == request.auth.uid
+                      || resource.data.friendId == request.auth.uid);
+
+      allow create: if isConsumer()
+                    && request.resource.data.consumerId == request.auth.uid
+                    && request.resource.data.friendId is string
+                    && request.resource.data.status == 'active'
+                    && request.resource.data.startedAt == request.time
+                    && request.resource.data.endedAt == null
+                    && request.resource.data.minutes == 0
+                    && request.resource.data.messageCount == 0
+                    && request.resource.data.cost == 0
+                    && request.resource.data.earnings == 0
+                    && request.resource.data.topic is string
+                    && request.resource.data.topic.size() <= 140;
+
+      allow update: if signedIn()
+                    && (resource.data.consumerId == request.auth.uid
+                        || resource.data.friendId == request.auth.uid)
+                    && request.resource.data.consumerId == resource.data.consumerId
+                    && request.resource.data.friendId   == resource.data.friendId
+                    && request.resource.data.startedAt  == resource.data.startedAt
+                    && request.resource.data.diff(resource.data).affectedKeys()
+                         .hasOnly(['status','endedAt','minutes','messageCount','cost','earnings'])
+                    && request.resource.data.minutes >= 0
+                    && request.resource.data.cost >= 0
+                    && request.resource.data.earnings >= 0;
+
+      allow delete: if false;
     }
   }
 }

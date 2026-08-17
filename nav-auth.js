@@ -1,4 +1,4 @@
-import { watchAuth, logOut } from './auth.js';
+import { watchAuth, logOut, dashboardFor } from './auth.js';
 
 const toggle = document.getElementById('login-toggle');
 const menu = document.getElementById('login-menu');
@@ -12,7 +12,7 @@ document.addEventListener('click', (e) => {
 
 watchAuth((user, profile) => {
   if (!user || !profile) return;
-  const dashboardHref = profile.role === 'friend' ? 'dashboard-friend.html' : 'dashboard-consumer.html';
+  const dashboardHref = dashboardFor(profile.role);
   toggle.textContent = 'Account ▾';
   menu.innerHTML = `
     <a href="${dashboardHref}" style="display:block;padding:12px 16px;font-size:14px;border-bottom:1px solid var(--border)">Dashboard</a>

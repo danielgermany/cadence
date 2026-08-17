@@ -11,6 +11,10 @@ export function watchAuth(callback) {
   });
 }
 
+export function dashboardFor(role) {
+  return role === 'friend' ? 'dashboard-friend.html' : 'dashboard-consumer.html';
+}
+
 export async function logOut() {
   await signOut(auth);
   window.location.href = 'index.html';
@@ -27,7 +31,22 @@ export function requireRole(role) {
         return;
       }
       if (profile.role !== role) {
-        window.location.href = profile.role === 'friend' ? 'dashboard-friend.html' : 'dashboard-consumer.html';
+        window.location.href = dashboardFor(profile.role);
+        return;
+      }
+      resolve({ user, profile });
+    });
+  });
+}
+
+// Like requireRole, but accepts either role. Used by the chat window, which
+// serves both a Consumer and a Friend and branches on profile.role itself.
+export function requireAuth() {
+  return new Promise((resolve) => {
+    const unsubscribe = watchAuth((user, profile) => {
+      unsubscribe();
+      if (!user || !profile) {
+        window.location.href = 'login.html';
         return;
       }
       resolve({ user, profile });

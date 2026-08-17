@@ -19,29 +19,66 @@
 </nav>
 
 <main class="shell" id="dashboard-main" style="padding:clamp(32px,6vw,64px) clamp(20px,5vw,72px);display:none">
-  <span class="eyebrow">Your listening room</span>
-  <h1 id="greeting" style="font-weight:800;font-size:32px;margin:0 0 8px"></h1>
-  <p class="notice" style="margin-bottom:32px">Cadence is not therapy. Follow the community guidelines / ICF Code of Ethics in every conversation.</p>
+  <div class="page-head">
+    <div>
+      <span class="eyebrow">Your listening room</span>
+      <h1 id="greeting" class="page-title"></h1>
+      <p class="notice">Cadence is not therapy. Follow the community guidelines / ICF Code of Ethics in every conversation.</p>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <span id="availability-dot" class="dot"></span>
+      <strong id="availability-label" style="font-size:14px"></strong>
+      <button type="button" id="availability-toggle" class="btn btn-secondary" style="cursor:pointer">Toggle</button>
+    </div>
+  </div>
 
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px">
-    <section class="card">
-      <span class="eyebrow" style="margin-bottom:12px">Availability</span>
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-        <span id="availability-dot" class="dot"></span>
-        <strong id="availability-label"></strong>
+  <div id="kpis" class="kpi-row"></div>
+
+  <div class="grid-cards">
+    <section class="card card-wide">
+      <div class="card-head">
+        <span class="eyebrow">Waiting now</span>
+        <span id="queue-count" class="d-list-meta"></span>
       </div>
-      <p class="notice" style="margin-bottom:16px">Toggling this updates whether customers see you as available to chat.</p>
-      <button type="button" id="availability-toggle" class="btn btn-secondary" style="cursor:pointer">Toggle availability</button>
+      <div id="queue"></div>
+      <p id="queue-error" class="notice-error" style="margin-top:12px;display:none"></p>
+    </section>
+
+    <section class="card card-wide">
+      <div class="card-head">
+        <span class="eyebrow">Recent sessions</span>
+        <span id="history-count" class="d-list-meta"></span>
+      </div>
+      <div id="history"></div>
+      <p id="history-note" class="notice" style="margin-top:12px;display:none">Showing your most recent 200 sessions.</p>
     </section>
 
     <section class="card">
-      <span class="eyebrow" style="margin-bottom:8px">Waiting now</span>
-      <p class="notice">No one is waiting yet. When a customer reaches out, they'll show up here.</p>
+      <span class="eyebrow" style="margin-bottom:8px">Earnings</span>
+      <p style="font-size:14px;margin:0 0 4px"><strong>Earned to date:</strong> <span id="total-earnings" class="money"></span></p>
+      <p style="font-size:14px;margin:0 0 4px"><strong>Sessions completed:</strong> <span id="total-sessions"></span></p>
+      <p style="font-size:14px;margin:0 0 12px"><strong>Time listening:</strong> <span id="total-minutes"></span></p>
+      <p class="notice">A modeled figure: <span id="share-line"></span> of what the customer is charged. There is no payments system in this build — nothing has been paid out.</p>
     </section>
 
     <section class="card">
       <span class="eyebrow" style="margin-bottom:8px">Profile</span>
-      <p style="font-size:14px;margin:0 0 4px"><strong>Name:</strong> <span id="profile-name"></span></p>
+      <div class="field">
+        <label for="display-name">Display name</label>
+        <input id="display-name" class="input" maxlength="60" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="languages-input">Languages (comma separated)</label>
+        <input id="languages-input" class="input" autocomplete="off" placeholder="English, Spanish">
+      </div>
+      <div class="field">
+        <label for="topics-input">Topics you're comfortable with (comma separated)</label>
+        <input id="topics-input" class="input" autocomplete="off" placeholder="Work stress, loneliness">
+      </div>
+      <div id="chips" class="chip-row" style="margin-bottom:16px"></div>
+      <button type="button" id="save-profile" class="btn btn-secondary" style="cursor:pointer">Save</button>
+      <p id="profile-status" class="notice" style="margin-top:8px;display:none"></p>
+      <hr class="rule" style="margin:16px 0">
       <p style="font-size:14px;margin:0 0 4px"><strong>Email:</strong> <span id="profile-email"></span></p>
       <p style="font-size:14px;margin:0"><strong>Partner since:</strong> <span id="profile-since"></span></p>
     </section>
