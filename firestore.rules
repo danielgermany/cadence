@@ -116,5 +116,29 @@ service cloud.firestore {
 
       allow delete: if false;
     }
+
+    // ---- messages: the live conversation, readable only by the two
+    // participants of the parent session. Append-only — nobody edits or
+    // deletes what was said, including the author.
+    match /sessions/{sessionId}/messages/{messageId} {
+
+      function participant() {
+        let s = get(/databases/$(database)/documents/sessions/$(sessionId)).data;
+        return s.consumerId == request.auth.uid || s.friendId == request.auth.uid;
+      }
+
+      allow read: if signedIn() && participant();
+
+      allow create: if signedIn() && participant()
+                    && request.resource.data.from == request.auth.uid
+                    && request.resource.data.fromName is string
+                    && request.resource.data.fromName.size() <= 60
+                    && request.resource.data.text is string
+                    && request.resource.data.text.size() > 0
+                    && request.resource.data.text.size() <= 1000
+                    && request.resource.data.createdAt == request.time;
+
+      allow update, delete: if false;
+    }
   }
 }

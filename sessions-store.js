@@ -127,14 +127,31 @@ function derive(messageCount) {
   return { cost, earnings: Math.round(cost * PAYOUT_SHARE * 100) / 100 };
 }
 
-// One small write per message sent. Keeping the running count on the doc is
-// what lets EITHER participant end the session and still record the right cost
-// — the Friend has no local knowledge of what the Consumer typed.
-export function recordMessage(sessionId, messageCount) {
-  return updateDoc(doc(db, 'sessions', sessionId), {
-    messageCount,
-    ...derive(messageCount),
+/* ---------------- messages ---------------- */
+
+export function sendMessage(sessionId, user, fromName, text) {
+  return addDoc(collection(db, 'sessions', sessionId, 'messages'), {
+    from: user.uid,
+    fromName: (fromName || '').slice(0, 60),
+    text: text.slice(0, 1000),
+    createdAt: serverTimestamp(),
   });
+}
+
+export function watchMessages(sessionId, cb, onError) {
+  const q = query(
+    collection(db, 'sessions', sessionId, 'messages'),
+    orderBy('createdAt', 'asc'),
+  );
+  return onSnapshot(q, (snap) => {
+    cb(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+  }, onError);
+}
+
+// The Consumer is charged per message THEY send. Both participants see the
+// whole thread, so either one can compute this and end the session correctly.
+export function billableCount(messages, consumerId) {
+  return messages.filter((m) => m.from === consumerId).length;
 }
 
 // Cost and earnings are derived here, in one write, so the stored numbers can

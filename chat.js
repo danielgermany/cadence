@@ -6,19 +6,13 @@
 // See firestore.rules — the `status == 'waiting'` precondition on the claim is
 // the compare-and-swap.
 import { requireAuth, dashboardFor } from './auth.js';
-import { formatMoney } from './dashboard-shell.js';
+import { formatMoney, displayNameOf } from './dashboard-shell.js';
 import {
-  SMS_RATE, SESSION_MINUTES,
+  SMS_RATE, SESSION_MINUTES, PAYOUT_SHARE,
   joinQueue, leaveQueue, watchMyQueueEntry, createSession,
-  watchMyLatestSession, watchSession, getSession, recordMessage, endSession,
+  watchMyLatestSession, watchSession, getSession, endSession,
+  sendMessage as postMessage, watchMessages, billableCount,
 } from './sessions-store.js';
-
-const REPLIES = [
-  "Got it. Tell me more?",
-  "I hear you — that sounds like a lot.",
-  "Take your time, I'm listening.",
-  "That makes sense. What's on your mind next?",
-];
 
 const params = new URLSearchParams(window.location.search);
 const queueParam = params.get('queue');
@@ -73,12 +67,26 @@ function showError(message) {
 
 /* ---------------- live conversation ---------------- */
 
-function appendMessage(from, text) {
-  const div = document.createElement('div');
-  div.className = from === 'you' ? 'chat-msg-you' : 'chat-msg-them';
-  div.textContent = text;
-  logEl.appendChild(div);
-  logEl.scrollTop = logEl.scrollHeight;
+// The snapshot is the source of truth, so the whole thread re-renders on each
+// change rather than being appended to locally.
+function renderMessages(messages) {
+  const atBottom = logEl.scrollHeight - logEl.scrollTop - logEl.clientHeight < 40;
+  logEl.innerHTML = '';
+  if (!messages.length) {
+    const hint = document.createElement('p');
+    hint.className = 'notice';
+    hint.textContent = isFriend
+      ? 'Say hello — they came here to be heard.'
+      : "You're connected. Say whatever's on your mind.";
+    logEl.appendChild(hint);
+  }
+  messages.forEach((m) => {
+    const div = document.createElement('div');
+    div.className = m.from === user.uid ? 'chat-msg-you' : 'chat-msg-them';
+    div.textContent = m.text;
+    logEl.appendChild(div);
+  });
+  if (atBottom) logEl.scrollTop = logEl.scrollHeight;
 }
 
 function minutesElapsed() {
@@ -93,14 +101,16 @@ function renderTimer() {
 }
 
 function renderCost() {
+  const label = isFriend ? 'earning' : 'so far';
+  const money = sentCount * SMS_RATE * (isFriend ? PAYOUT_SHARE : 1);
   document.getElementById('live-cost').textContent =
-    `${sentCount} message(s) · ${formatMoney(sentCount * SMS_RATE)}`;
+    `${sentCount} message(s) · ${formatMoney(money)} ${label}`;
 }
 
 function goLive(session) {
   sessionId = session.id;
   sessionData = session;
-  sentCount = session.messageCount || 0;
+  sentCount = session.messageCount || 0; // corrected by the first message snapshot
   startedAtMs = session.startedAt && session.startedAt.toDate
     ? session.startedAt.toDate().getTime()
     : Date.now();
@@ -113,15 +123,15 @@ function goLive(session) {
     ? `Topic: ${session.topic}`
     : 'No topic given.';
 
-  if (isFriend) {
-    // Honest limitation: there is no messages collection yet, so the Consumer's
-    // replies are canned locally and nothing the Friend types is delivered.
-    // Live relay is a separate piece of work.
-    document.getElementById('composer').style.display = 'none';
-    appendMessage('them', 'Live message relay is not built yet — this window tracks the session so it lands on both dashboards.');
-  } else {
-    appendMessage('them', "Hi, I'm here — no judgment, just listening. What's on your mind?");
-  }
+  draftEl.placeholder = isFriend ? 'Reply…' : `Type a message — ${formatMoney(SMS_RATE)} each`;
+
+  // Live thread, both directions. Also the billing source: sentCount counts
+  // only the Consumer's messages, which is what gets charged.
+  track(watchMessages(sessionId, (messages) => {
+    renderMessages(messages);
+    sentCount = billableCount(messages, session.consumerId);
+    renderCost();
+  }, (err) => showError(errorText(err))));
 
   renderCost();
   renderTimer();
@@ -131,29 +141,23 @@ function goLive(session) {
   track(watchSession(sessionId, (s) => {
     if (!s) return;
     sessionData = s;
-    if (!isFriend) sentCount = Math.max(sentCount, s.messageCount || 0);
     if (s.status === 'ended' && !ending) showEnded(s);
   }));
 
   showPane('live');
 }
 
-async function sendMessage() {
+async function send() {
   const text = draftEl.value.trim();
   if (!text || !sessionId || ending) return;
   draftEl.value = '';
-  appendMessage('you', text);
-  sentCount += 1;
-  renderCost();
-
   try {
-    await recordMessage(sessionId, sentCount);
+    // The snapshot listener renders it once it lands.
+    await postMessage(sessionId, user, displayNameOf(profile), text);
   } catch (err) {
+    draftEl.value = text;
     showError(errorText(err));
   }
-
-  const reply = REPLIES[(sentCount - 1) % REPLIES.length];
-  setTimeout(() => { if (!ending) appendMessage('them', reply); }, 900);
 }
 
 async function finishSession() {
@@ -161,7 +165,9 @@ async function finishSession() {
   ending = true;
   if (timer) clearInterval(timer);
 
-  const count = isFriend ? (sessionData?.messageCount || 0) : sentCount;
+  // sentCount comes from the message stream, which both participants see — so
+  // either side can end the chat and record the same billable count.
+  const count = sentCount;
   try {
     await endSession(sessionId, { minutes: Math.max(1, minutesElapsed()), messageCount: count });
     const fresh = await getSession(sessionId);
@@ -284,9 +290,9 @@ document.getElementById('join-btn').addEventListener('click', join);
 document.getElementById('topic-input').addEventListener('keydown', (e) => {
   if (e.key === 'Enter') { e.preventDefault(); join(); }
 });
-sendBtn.addEventListener('click', sendMessage);
+sendBtn.addEventListener('click', send);
 draftEl.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') { e.preventDefault(); sendMessage(); }
+  if (e.key === 'Enter') { e.preventDefault(); send(); }
 });
 document.getElementById('end-btn').addEventListener('click', finishSession);
 document.getElementById('cancel-btn').addEventListener('click', async () => {
