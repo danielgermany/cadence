@@ -6,7 +6,7 @@ import {
 } from 'https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js';
 import { db } from './firebase-config.js';
 
-export const SMS_RATE = 1;        // per message sent — matches demo-widget.js
+export const SMS_RATE = 1;        // charged to the Consumer per message they send
 export const PAYOUT_SHARE = 0.7;  // the Friend's modeled cut; there is no payments system
 export const SESSION_MINUTES = 60;
 
